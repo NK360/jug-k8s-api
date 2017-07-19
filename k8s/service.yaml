@@ -5,9 +5,10 @@ metadata:
   labels:
     app: jug-api
     visualize: "true"
+  annotations:
     prometheus.io/scrape: "true"
     prometheus.io/port: "9000"
-    prometheus.io/path: "prometheus"
+    prometheus.io/path: "/prometheus"
   namespace: jug
 spec:
   selector:
