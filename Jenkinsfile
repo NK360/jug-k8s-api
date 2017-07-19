@@ -16,10 +16,10 @@ podTemplate(name: 'jug-build', label: 'jug-build', inheritFrom: 'java-build') {
                 doPushImage = true
         }
 
-		container('build') {
-			stage('Tests') {
-			    sh './gradlew check --no-daemon --info'
-			}
+        container('build') {
+            stage('Tests') {
+                sh './gradlew check --no-daemon --info'
+            }
 
             if (doPushImage) {
                 stage('Docker build') {
@@ -46,10 +46,10 @@ podTemplate(name: 'jug-build', label: 'jug-build', inheritFrom: 'java-build') {
                     }
                 }
             }
-		}
+        }
 
-		if (doDeployment) {
-		    container('kubectl') {
+        if (doDeployment) {
+            container('kubectl') {
                 stage('Trigger Deployment') {
                     switch (gitBranch) {
                         case "master":
@@ -58,7 +58,7 @@ podTemplate(name: 'jug-build', label: 'jug-build', inheritFrom: 'java-build') {
                             break
                     }
                 }
-		    }
-		}
-	}
+            }
+        }
+    }
 }
