@@ -44,7 +44,7 @@ spec:
       - name: kube-registry
       containers:
       - name: jug-api
-        image: "kube-registry.int.nk360.de/jug-api:v0.1.0-SNAPSHOT"
+        image: "kube-registry.int.nk360.de/jug-api:production"
         imagePullPolicy: Always
         env:
         - name: JAVA_OPTS
