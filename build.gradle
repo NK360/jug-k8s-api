@@ -1,0 +1,47 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+    dependencies {
+        classpath 'se.transmode.gradle:gradle-docker:1.2'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '1.5.4.RELEASE'
+}
+
+apply plugin: 'docker'
+
+group GROUP_ID
+version = properties.version
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+jar {
+    archiveName project.name + '.jar'
+}
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-actuator')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+task buildDocker(type: Docker, dependsOn: build) {
+    push = false
+    applicationName = project.name
+    dockerfile = file('src/main/docker/Dockerfile')
+    tag 'kube-registry.int.nk360.de/' + project.name
+    tagVersion 'latest'
+    doFirst {
+        copy {
+            from jar
+            into stageDir
+        }
+    }
+}

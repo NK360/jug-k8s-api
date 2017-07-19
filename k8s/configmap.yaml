@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jug-api
+  namespace: jug
+data:
+  application.properties: ""

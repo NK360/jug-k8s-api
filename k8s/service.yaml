@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: api
+  labels:
+    app: jug-api
+    visualize: "true"
+  namespace: jug
+spec:
+  selector:
+    app: jug-api
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP

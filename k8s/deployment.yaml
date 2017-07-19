@@ -1,0 +1,91 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: jug-api
+  labels:
+    app: jug-api
+    visualize: "true"
+    version: production
+  namespace: jug
+spec:
+  revisionHistoryLimit: 2
+  strategy:
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 0
+  replicas: 3
+  selector:
+    matchLabels:
+      app: jug-api
+  template:
+    metadata:
+      labels:
+        app: jug-api
+        version: production
+        visualize: "true"
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - jug-api
+                - key: version
+                  operator: In
+                  values:
+                  - production
+              topologyKey: kubernetes.io/hostname
+      imagePullSecrets:
+      - name: kube-registry
+      containers:
+      - name: jug-api
+        image: "kube-registry.int.nk360.de/jug-api:v0.1.0-SNAPSHOT"
+        imagePullPolicy: Always
+        env:
+        - name: JAVA_OPTS
+          value: "-Xms128M -Xmx512M -Xss256k"
+        - name: SPRING_PROFILES_ACTIVE
+          value: production
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        resources:
+          requests:
+            cpu: 200m
+            memory: 128Mi
+          limits:
+            cpu: 1
+            memory: 512Mi
+        livenessProbe:
+          httpGet:
+            path: "/_actuator/health"
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 30
+          failureThreshold: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        readinessProbe:
+          httpGet:
+            path: "/_actuator/health"
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 30
+          failureThreshold: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+      volumes:
+      - name: config
+        configMap:
+          name: jug-api
