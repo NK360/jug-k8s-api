@@ -29,6 +29,8 @@ jar {
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	compile('org.springframework.boot:spring-boot-starter-web')
+    compile('io.prometheus:simpleclient_spring_boot:0.0.20')
+    compileOnly('org.springframework.boot:spring-boot-configuration-processor')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 

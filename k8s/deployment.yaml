@@ -55,6 +55,9 @@ spec:
         - name: http
           containerPort: 8080
           protocol: TCP
+        - name: management
+          containerPort: 9000
+          protocol: TCP
         volumeMounts:
         - name: config
           mountPath: /config

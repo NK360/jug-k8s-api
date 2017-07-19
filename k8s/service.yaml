@@ -5,6 +5,9 @@ metadata:
   labels:
     app: jug-api
     visualize: "true"
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9000"
+    prometheus.io/path: "prometheus"
   namespace: jug
 spec:
   selector:
@@ -12,4 +15,7 @@ spec:
   ports:
   - name: http
     port: 8080
+    protocol: TCP
+  - name: management
+    port: 9000
     protocol: TCP
