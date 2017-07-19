@@ -1,5 +1,5 @@
 podTemplate(name: 'jug-build', label: 'jug-build', inheritFrom: 'java-build') {
-	node ('jug-build') {
+    node ('jug-build') {
         stage('Checkout Repository') {
             checkout scm
         }
