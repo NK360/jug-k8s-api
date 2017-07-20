@@ -7,12 +7,14 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath('se.transmode.gradle:gradle-docker:1.2')
 	}
 }
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'docker'
 
 group GROUP_ID
 version = properties.version
@@ -26,4 +28,22 @@ repositories {
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+jar {
+	archiveName project.name + '.jar'
+}
+
+task buildDocker(type: Docker, dependsOn: build) {
+	push = false
+	applicationName = project.name
+	dockerfile = file('src/main/docker/Dockerfile')
+	tag 'kube-registry.int.nk360.de/' + project.name
+	tagVersion 'latest'
+	doFirst {
+		copy {
+			from jar
+			into stageDir
+		}
+	}
 }
