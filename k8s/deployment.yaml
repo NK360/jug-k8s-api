@@ -1,0 +1,21 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: jug-api-production
+  namespace: jug
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: jug-api-production
+    spec:
+      imagePullSecrets:
+      - name: kube-registry
+      containers:
+      - name: jug-api
+        image: "kube-registry.int.nk360.de/jug-api:production"
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
