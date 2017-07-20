@@ -14,7 +14,8 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 
-version = '0.0.1-SNAPSHOT'
+group GROUP_ID
+version = properties.version
 sourceCompatibility = 1.8
 
 repositories {
