@@ -4,7 +4,7 @@ metadata:
   name: jug-api-production
   namespace: jug
 spec:
-  replicas: 1
+  replicas: 3
   template:
     metadata:
       labels:
