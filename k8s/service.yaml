@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: jug-api-production
+  namespace: jug
+spec:
+  selector:
+    app: jug-api-production
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
